@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>패션의 획일화 — 개성 상실에 관한 고찰</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+KR:wght@300;400;500;700;900&family=Noto+Serif+KR:wght@300;400;600&family=Space+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --white: #f5f5f0;
+    --gray-100: #e8e8e3;
+    --gray-300: #b0b0a8;
+    --gray-500: #6e6e68;
+    --gray-700: #3a3a36;
+    --accent: #c8b89a;
+    --accent-dark: #8a7a5e;
+    --red: #c0392b;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CUSTOM CURSOR */
+  .cursor {
+    position: fixed;
+    width: 8px; height: 8px;
+    background: var(--white);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease;
+    mix-blend-mode: difference;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 36px; height: 36px;
+    border: 1px solid rgba(245,245,240,0.5);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transition: transform 0.25s ease, width 0.25s, height 0.25s;
+    transform: translate(-14px,-14px);
+    mix-blend-mode: difference;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 3rem;
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(245,245,240,0.06);
+    background: rgba(10,10,10,0.7);
+  }
+  .nav-logo {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: var(--gray-300);
+    text-transform: uppercase;
+  }
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    color: var(--gray-500);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--white); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 8rem 4rem 5rem 6rem;
+    position: relative;
+    z-index: 2;
+  }
+  .hero-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .hero-tag::before {
+    content: '';
+    width: 2rem;
+    height: 1px;
+    background: var(--accent);
+  }
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 7vw, 8rem);
+    line-height: 0.92;
+    letter-spacing: 0.02em;
+    color: var(--white);
+    margin-bottom: 2.5rem;
+  }
+  .hero-title span {
+    display: block;
+    color: var(--gray-500);
+    -webkit-text-stroke: 1px var(--gray-700);
+    color: transparent;
+  }
+  .hero-sub {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--gray-300);
+    max-width: 28rem;
+    margin-bottom: 3rem;
+    font-weight: 300;
+  }
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: var(--white);
+    text-decoration: none;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--gray-700);
+    padding-bottom: 0.5rem;
+    transition: border-color 0.3s, gap 0.3s;
+  }
+  .hero-cta:hover { border-color: var(--accent); gap: 1.5rem; }
+  .hero-cta::after { content: '↓'; }
+
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-right-inner {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hero-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32vw;
+    line-height: 1;
+    color: var(--gray-700);
+    opacity: 0.3;
+    user-select: none;
+    animation: float 8s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+  }
+  .hero-overlay-text {
+    position: absolute;
+    right: 3rem;
+    top: 50%;
+    transform: translateY(-50%);
+    writing-mode: vertical-rl;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--gray-700);
+    text-transform: uppercase;
+  }
+
+  /* MARQUEE */
+  .marquee-wrap {
+    overflow: hidden;
+    border-top: 1px solid var(--gray-700);
+    border-bottom: 1px solid var(--gray-700);
+    padding: 1rem 0;
+    background: var(--gray-700);
+  }
+  .marquee {
+    display: flex;
+    gap: 4rem;
+    animation: marquee 20s linear infinite;
+    width: max-content;
+  }
+  .marquee-item {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.3em;
+    color: var(--gray-300);
+    text-transform: uppercase;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+  .marquee-item::after {
+    content: '◆';
+    font-size: 0.5rem;
+    color: var(--accent);
+  }
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* SECTION BASE */
+  section {
+    padding: 7rem 6rem;
+    position: relative;
+  }
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .section-label::before {
+    content: '';
+    width: 1.5rem;
+    height: 1px;
+    background: var(--accent);
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 5rem);
+    line-height: 1;
+    letter-spacing: 0.03em;
+    margin-bottom: 3rem;
+  }
+
+  /* INTRO SECTION */
+  .intro {
+    background: var(--white);
+    color: var(--black);
+  }
+  .intro .section-label { color: var(--accent-dark); }
+  .intro .section-label::before { background: var(--accent-dark); }
+  .intro .section-title { color: var(--black); }
+  .intro-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+  .intro-text {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 1.1rem;
+    line-height: 2;
+    color: var(--gray-700);
+    font-weight: 300;
+  }
+  .intro-shift {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .shift-item {
+    padding: 2rem;
+    border: 1px solid var(--gray-100);
+    position: relative;
+    transition: background 0.3s;
+  }
+  .shift-item:hover { background: var(--gray-100); }
+  .shift-item-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+  .shift-item-title {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--black);
+    margin-bottom: 0.5rem;
+  }
+  .shift-item-desc {
+    font-size: 0.85rem;
+    color: var(--gray-500);
+    line-height: 1.7;
+  }
+  .shift-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem;
+    font-size: 1.5rem;
+    color: var(--gray-300);
+  }
+
+  /* PARADIGM SECTION */
+  .paradigm {
+    background: var(--black);
+  }
+  .paradigm-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin-top: 1rem;
+    background: var(--gray-700);
+  }
+  .paradigm-card {
+    background: var(--black);
+    padding: 3rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.4s;
+  }
+  .paradigm-card:hover { background: #111; }
+  .paradigm-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 3px;
+  }
+  .paradigm-card.left::before { background: var(--white); }
+  .paradigm-card.right::before { background: var(--gray-500); }
+  .paradigm-card-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .paradigm-card-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+  .paradigm-card-sub {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 2rem;
+  }
+  .paradigm-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .paradigm-list li {
+    font-size: 0.9rem;
+    color: var(--gray-300);
+    line-height: 1.6;
+    padding-left: 1.25rem;
+    position: relative;
+  }
+  .paradigm-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--gray-700);
+  }
+
+  /* AMBASSADOR SECTION */
+  .ambassador {
+    background: #0f0f0f;
+    overflow: hidden;
+  }
+  .ambassador-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 4rem;
+  }
+  .ambassador-quote {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 0.9rem;
+    color: var(--gray-500);
+    max-width: 24rem;
+    line-height: 1.8;
+    text-align: right;
+    font-style: italic;
+  }
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2px;
+    background: var(--gray-700);
+    margin-bottom: 3rem;
+  }
+  .brand-card {
+    background: #0f0f0f;
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.4s;
+  }
+  .brand-card:hover { background: #1a1a1a; }
+  .brand-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: var(--white);
+    transform: scaleX(0);
+    transition: transform 0.4s;
+  }
+  .brand-card:hover::before { transform: scaleX(1); }
+  .brand-card-member {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--white);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .brand-card-brand {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.1em;
+    color: var(--gray-300);
+    margin-bottom: 1rem;
+  }
+  .brand-card-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.1em;
+    color: var(--gray-700);
+    text-transform: uppercase;
+    font-style: italic;
+  }
+  .ambassador-bottom {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 2rem 0;
+    border-top: 1px solid var(--gray-700);
+  }
+  .ambassador-bottom-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    text-transform: uppercase;
+  }
+  .ambassador-bottom-text {
+    font-size: 0.9rem;
+    color: var(--gray-300);
+    line-height: 1.6;
+  }
+
+  /* STATS SECTION */
+  .stats {
+    background: var(--white);
+    color: var(--black);
+    overflow: hidden;
+  }
+  .stats .section-title { color: var(--black); }
+  .stats .section-label { color: var(--accent-dark); }
+  .stats .section-label::before { background: var(--accent-dark); }
+  .stats-intro {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 1rem;
+    color: var(--gray-500);
+    max-width: 36rem;
+    line-height: 1.9;
+    margin-bottom: 4rem;
+  }
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: var(--gray-300);
+    margin-bottom: 4rem;
+  }
+  .stat-block {
+    background: var(--white);
+    padding: 3rem 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+  .stat-block:hover { background: var(--gray-100); }
+  .stat-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 7vw, 7rem);
+    line-height: 1;
+    color: var(--black);
+    margin-bottom: 0.5rem;
+  }
+  .stat-label {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--black);
+    margin-bottom: 0.25rem;
+  }
+  .stat-sub {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--gray-500);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .stat-block-source {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.55rem;
+    color: var(--gray-300);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 2rem;
+  }
+
+  /* INFLUENCER SECTION */
+  .influencer {
+    background: var(--black);
+  }
+  .influencer-intro {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 1rem;
+    color: var(--gray-300);
+    max-width: 42rem;
+    line-height: 1.9;
+    margin-bottom: 4rem;
+    font-style: italic;
+  }
+  .influencer-intro strong {
+    font-style: normal;
+    color: var(--white);
+    font-weight: 500;
+  }
+  .inf-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: var(--gray-700);
+    margin-bottom: 3rem;
+  }
+  .inf-card {
+    background: var(--black);
+    padding: 3rem 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.4s;
+  }
+  .inf-card:hover { background: #0f0f0f; }
+  .inf-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--white);
+  }
+  .inf-card-type {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+  .inf-card-platform {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+  }
+  .inf-card-desc {
+    font-size: 0.9rem;
+    color: var(--gray-300);
+    line-height: 1.8;
+    margin-bottom: 2rem;
+  }
+  .inf-card-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    color: var(--gray-700);
+    font-style: italic;
+    border-top: 1px solid var(--gray-700);
+    padding-top: 1.5rem;
+  }
+  .inf-callout {
+    background: var(--white);
+    color: var(--black);
+    padding: 2rem 3rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+  .inf-callout-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+  .inf-callout-text {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--black);
+    line-height: 1.6;
+  }
+  .inf-callout-text strong {
+    font-weight: 900;
+  }
+
+  /* CRITIQUE SECTION */
+  .critique {
+    background: var(--black);
+    border-top: 1px solid var(--gray-700);
+  }
+  .critique-block {
+    padding: 3rem;
+    border: 1px solid var(--gray-700);
+    margin-bottom: 2px;
+    position: relative;
+    transition: border-color 0.3s;
+  }
+  .critique-block:hover { border-color: var(--gray-300); }
+  .critique-block-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4rem;
+    color: var(--gray-700);
+    position: absolute;
+    right: 3rem;
+    top: 2rem;
+    line-height: 1;
+    transition: color 0.3s;
+  }
+  .critique-block:hover .critique-block-num { color: var(--gray-500); }
+  .critique-block-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+  }
+  .critique-block-text {
+    font-size: 0.95rem;
+    color: var(--gray-300);
+    line-height: 1.9;
+    max-width: 52rem;
+  }
+  .critique-block-text strong { color: var(--white); font-weight: 700; }
+
+  /* BIG QUOTE */
+  .big-quote {
+    background: var(--white);
+    color: var(--black);
+    padding: 8rem 6rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .big-quote::before {
+    content: '"';
+    font-family: 'Noto Serif KR', serif;
+    font-size: 30rem;
+    position: absolute;
+    top: -8rem;
+    left: -2rem;
+    color: var(--gray-100);
+    line-height: 1;
+    pointer-events: none;
+  }
+  .big-quote-text {
+    font-family: 'Noto Serif KR', serif;
+    font-size: clamp(1.5rem, 3.5vw, 3rem);
+    line-height: 1.6;
+    color: var(--black);
+    max-width: 54rem;
+    margin: 0 auto 2rem;
+    position: relative;
+    z-index: 1;
+    font-weight: 300;
+  }
+  .big-quote-text em {
+    font-style: italic;
+    color: var(--accent-dark);
+  }
+  .big-quote-source {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* CONCLUSION */
+  .conclusion {
+    background: var(--black);
+    padding: 7rem 6rem;
+  }
+  .conclusion-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    background: var(--gray-700);
+    margin-top: 3rem;
+  }
+  .conclusion-card {
+    background: var(--black);
+    padding: 3rem;
+    transition: background 0.3s;
+  }
+  .conclusion-card:hover { background: #111; }
+  .conclusion-card::before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 2px;
+    margin-bottom: 2.5rem;
+  }
+  .conclusion-card.card-1::before { background: var(--white); }
+  .conclusion-card.card-2::before { background: var(--gray-500); }
+  .conclusion-card-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 1.5rem;
+  }
+  .conclusion-card-text {
+    font-size: 0.9rem;
+    color: var(--gray-300);
+    line-height: 1.9;
+  }
+  .conclusion-final {
+    margin-top: 5rem;
+    text-align: center;
+  }
+  .conclusion-final-text {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 1rem;
+    color: var(--gray-500);
+    font-style: italic;
+    letter-spacing: 0.05em;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--black);
+    border-top: 1px solid var(--gray-700);
+    padding: 2.5rem 6rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-left {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    color: var(--gray-700);
+    text-transform: uppercase;
+  }
+  .footer-right {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    color: var(--gray-700);
+    text-transform: uppercase;
+  }
+
+  /* SCROLL ANIMATIONS */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* HORIZONTAL LINE DECO */
+  .h-line {
+    width: 100%;
+    height: 1px;
+    background: var(--gray-700);
+    margin: 3rem 0;
+  }
+
+  /* Highlight keyword */
+  .kw {
+    font-weight: 700;
+    color: var(--white);
+  }
+  .kw-accent {
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  /* KEYWORD TAGS */
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 2rem;
+  }
+  .tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    color: var(--gray-500);
+    border: 1px solid var(--gray-700);
+    padding: 0.35rem 0.75rem;
+    text-transform: uppercase;
+  }
+
+  /* PROGRESS BAR */
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    background: var(--accent);
+    z-index: 200;
+    width: 0%;
+    transition: width 0.1s;
+  }
+
+  @media (max-width: 900px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .nav-links { display: none; }
+    section { padding: 4rem 1.5rem; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-left { padding: 8rem 1.5rem 4rem; }
+    .hero-right { display: none; }
+    .intro-grid { grid-template-columns: 1fr; }
+    .paradigm-grid { grid-template-columns: 1fr; }
+    .cards-grid { grid-template-columns: repeat(2, 1fr); }
+    .stats-grid { grid-template-columns: 1fr; }
+    .inf-cards { grid-template-columns: 1fr; }
+    .conclusion-grid { grid-template-columns: 1fr; }
+    .big-quote { padding: 5rem 1.5rem; }
+    .big-quote::before { font-size: 15rem; top: -4rem; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; padding: 2rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
+<div class="progress-bar" id="progress-bar"></div>
+
+<nav>
+  <div class="nav-logo">Fashion & Identity Research</div>
+  <ul class="nav-links">
+    <li><a href="#intro">서론</a></li>
+    <li><a href="#paradigm">패러다임</a></li>
+    <li><a href="#ambassador">앰버서더</a></li>
+    <li><a href="#stats">손민수</a></li>
+    <li><a href="#influencer">인플루언서</a></li>
+    <li><a href="#critique">비판</a></li>
+    <li><a href="#conclusion">결론</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-left">
+    <div class="hero-tag reveal">Culture × Fashion Analysis</div>
+    <h1 class="hero-title reveal reveal-delay-1">
+      패션의<br>
+      획일화<br>
+      <span>개성의 소멸</span>
+    </h1>
+    <p class="hero-sub reveal reveal-delay-2">
+      엔터테인먼트 산업의 스타일링 변천과 아이돌·유튜버·인플루언서가 주도하는 패션 획일화 현상, 그리고 개성 상실에 관한 비판적 고찰.
+    </p>
+    <a href="#intro" class="hero-cta reveal reveal-delay-3">분석 시작하기</a>
+  </div>
+  <div class="hero-right">
+    <div class="hero-right-inner">
+      <div class="hero-number">F</div>
+    </div>
+    <div class="hero-overlay-text">Fashion Uniformity 2024</div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee">
+    <div class="marquee-item">스타일링의 전략적 가치</div>
+    <div class="marquee-item">인간 명품의 탄생</div>
+    <div class="marquee-item">손민수 효과</div>
+    <div class="marquee-item">기호의 감옥</div>
+    <div class="marquee-item">인플루언서 경제</div>
+    <div class="marquee-item">패션의 사회적 유니폼화</div>
+    <div class="marquee-item">개성의 약화</div>
+    <div class="marquee-item">스타일링의 전략적 가치</div>
+    <div class="marquee-item">인간 명품의 탄생</div>
+    <div class="marquee-item">손민수 효과</div>
+    <div class="marquee-item">기호의 감옥</div>
+    <div class="marquee-item">인플루언서 경제</div>
+    <div class="marquee-item">패션의 사회적 유니폼화</div>
+    <div class="marquee-item">개성의 약화</div>
+  </div>
+</div>
+
+<!-- INTRO -->
+<section class="intro" id="intro">
+  <div class="section-label reveal">01 — 서론</div>
+  <h2 class="section-title reveal reveal-delay-1">스타일링의<br>전략적 가치</h2>
+  <div class="intro-grid">
+    <div>
+      <p class="intro-text reveal reveal-delay-2">
+        현대 엔터테인먼트 산업에서 아티스트의 스타일링은 단순히 시각적 만족을 위한 의상 준비의 단계를 넘어섰다. 이는 그룹의 <strong>정체성(Identity)</strong>을 규정하는 핵심 자산이자, 아티스트의 '자본 위계'를 결정짓는 전략적 지표이다.<br><br>
+        과거 팬덤의 '조공 문화'가 단순한 서포트에서 럭셔리 브랜드로 이동하고, 아티스트를 평가하는 기준이 본질적인 실력에서 <strong>'글로벌 앰버서더 발탁 여부'</strong>로 전이된 현실은 스타일링이 지닌 경제적·산업적 파급력을 여실히 증명한다.
+      </p>
+      <div class="tag-list reveal reveal-delay-3">
+        <span class="tag">비주얼 디렉팅</span>
+        <span class="tag">상징 자본</span>
+        <span class="tag">브랜드 앰버서더</span>
+        <span class="tag">기호 가치</span>
+        <span class="tag">팬덤 소비</span>
+      </div>
+    </div>
+    <div class="intro-shift reveal reveal-delay-2">
+      <div class="shift-item">
+        <div class="shift-item-label">과거 — 실력 중심</div>
+        <div class="shift-item-title">음악적 역량 & 퍼포먼스</div>
+        <div class="shift-item-desc">연습생 선발부터 데뷔까지 음악적 역량과 퍼포먼스가 핵심 평가 기준이었던 시대</div>
+      </div>
+      <div class="shift-arrow">↓</div>
+      <div class="shift-item">
+        <div class="shift-item-label">현재 — 비주얼 / 브랜드 중심</div>
+        <div class="shift-item-title">글로벌 앰버서더 & 상징 자본</div>
+        <div class="shift-item-desc">글로벌 앰버서더 발탁 여부가 아티스트 위계를 결정하는 상징 자본의 시대</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARADIGM -->
+<section class="paradigm" id="paradigm">
+  <div class="section-label reveal">02 — 패러다임 변화</div>
+  <h2 class="section-title reveal reveal-delay-1">스타일링<br>패러다임의 전환</h2>
+  <div class="paradigm-grid">
+    <div class="paradigm-card left reveal">
+      <div class="paradigm-card-label">신체 중심 스타일링</div>
+      <div class="paradigm-card-title">JYP 엔터테인먼트 모델</div>
+      <div class="paradigm-card-sub">Body-Centric Aesthetics</div>
+      <ul class="paradigm-list">
+        <li>흑인 음악(Urban R&B)의 그루브를 시각적으로 극대화</li>
+        <li>"비율은 연습으로 커버할 수 없는 타고난 영역" — 비율 중심주의</li>
+        <li>안무의 라인을 선명하게 살릴 수 있는 신체 조건 최우선</li>
+        <li>의상을 통해 신체적 우월성 강조 → '세련미'와 '트렌디함' 주입</li>
+      </ul>
+    </div>
+    <div class="paradigm-card right reveal reveal-delay-1">
+      <div class="paradigm-card-label">자연주의 스타일링</div>
+      <div class="paradigm-card-title">민희진 디렉터 모델</div>
+      <div class="paradigm-card-sub">정(正)-반(反)-합(合) Philosophy</div>
+      <ul class="paradigm-list">
+        <li>f(x) 'Pink Tape'부터 NewJeans까지 — 기존 아이돌 문법의 전복</li>
+        <li>인위적인 화려함을 거부, 일상적 힙스터(Hipster) 코드 이식</li>
+        <li>'정교한 화려함(正)' → '극강의 자연스러움(反)' → 새로운 합(合)</li>
+        <li>대중이 갈망하던 새로운 예술적 방향성 제시</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- AMBASSADOR -->
+<section class="ambassador" id="ambassador">
+  <div class="ambassador-header">
+    <div>
+      <div class="section-label reveal">03 — 인간 명품</div>
+      <h2 class="section-title reveal reveal-delay-1">'인간 명품'의<br>탄생</h2>
+    </div>
+    <div class="ambassador-quote reveal reveal-delay-2">
+      아티스트는 곧 '성공과 욕망의 서사체'로 소비된다.<br>
+      스타일링은 이제 상징 자본이다.
+    </div>
+  </div>
+  <div class="cards-grid reveal">
+    <div class="brand-card">
+      <div class="brand-card-member">Hanni</div>
+      <div class="brand-card-brand">GUCCI</div>
+      <div class="brand-card-tag">Global Ambassador</div>
+    </div>
+    <div class="brand-card">
+      <div class="brand-card-member">Danielle</div>
+      <div class="brand-card-brand">BURBERRY</div>
+      <div class="brand-card-tag">Global Ambassador</div>
+    </div>
+    <div class="brand-card">
+      <div class="brand-card-member">Hyein</div>
+      <div class="brand-card-brand">LOUIS VUITTON</div>
+      <div class="brand-card-tag">최연소 앰버서더</div>
+    </div>
+    <div class="brand-card">
+      <div class="brand-card-member">Minji</div>
+      <div class="brand-card-brand">CHANEL</div>
+      <div class="brand-card-tag">Global Ambassador</div>
+    </div>
+    <div class="brand-card">
+      <div class="brand-card-member">Haerin</div>
+      <div class="brand-card-brand">DIOR</div>
+      <div class="brand-card-tag">Global Ambassador</div>
+    </div>
+  </div>
+  <div class="ambassador-bottom reveal">
+    <div class="ambassador-bottom-label">핵심 구조</div>
+    <div class="ambassador-bottom-text">
+      아이돌이 SNS에 명품 아이템을 게시하는 행위는 브랜드에는 MZ세대의 유입을, 아티스트에게는 이미지의 '고급화'라는 실익을 제공하며 <strong style="color:var(--white)">강력한 승자독식(Winner-takes-all) 구조</strong>를 형성한다.
+    </div>
+  </div>
+</section>
+
+<!-- STATS / 손민수 효과 -->
+<section class="stats" id="stats">
+  <div class="section-label reveal">05 — 모방 소비</div>
+  <h2 class="section-title reveal reveal-delay-1">'손민수 효과'</h2>
+  <p class="stats-intro reveal reveal-delay-2">
+    아이돌의 착장을 복제하려는 '손민수 효과'는 청소년층 사이에서 <strong>"또래 집단에서의 소외에 대한 방어기제"</strong>로 작동한다. 그 결과 명품 입문 연령은 위험 수준으로 하락했다.
+  </p>
+  <div class="stats-grid reveal">
+    <div class="stat-block">
+      <div class="stat-number">26.0%</div>
+      <div class="stat-label">고등학생</div>
+      <div class="stat-sub">High School</div>
+      <div class="stat-block-source">명품 첫 소비 경험 비율 — 2023 조사</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-number">17.6%</div>
+      <div class="stat-label">중학생</div>
+      <div class="stat-sub">Middle School</div>
+      <div class="stat-block-source">명품 첫 소비 경험 비율 — 2023 조사</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-number">11.7%</div>
+      <div class="stat-label">초등학생</div>
+      <div class="stat-sub">Elementary</div>
+      <div class="stat-block-source">명품 첫 소비 경험 비율 — 2023 조사</div>
+    </div>
+  </div>
+  <div class="h-line"></div>
+  <div class="intro-grid">
+    <div>
+      <p class="intro-text" style="font-size:0.9rem; color:var(--gray-500);">
+        경제적 자생력이 없는 미성년자들이 아이돌과 자신을 동일시하기 위해 고가의 명품을 소비하는 과정에서 심각한 <strong style="color:var(--black)">경제적 박탈감</strong>과 <strong style="color:var(--black)">왜곡된 가치관</strong>이 형성되고 있다.
+      </p>
+    </div>
+    <div>
+      <p class="intro-text" style="font-size:0.9rem; color:var(--gray-500);">
+        패션이 자아를 표현하는 주체적 수단에서 타인과 '급'을 나누는 도구로 변질되면서, 대중은 특정 브랜드의 상징 체계에 갇히는 <strong style="color:var(--black)">'기호의 감옥'</strong>에 투옥되었다.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- INFLUENCER SECTION -->
+<section class="influencer" id="influencer">
+  <div class="section-label reveal">06 — 인플루언서 효과</div>
+  <h2 class="section-title reveal reveal-delay-1">유튜버 &<br>인플루언서<br>모방 소비</h2>
+  <p class="influencer-intro reveal reveal-delay-2">
+    아이돌에 국한되지 않는다 — <strong>유튜버</strong>와 <strong>SNS 인플루언서</strong> 역시 동일한 모방 소비 구조를 재생산한다. 플랫폼 알고리즘이 특정 스타일을 증폭시키고, 팔로워 수가 권위로 환산되는 생태계 안에서 개인의 취향은 자본에 의해 설계된다.
+  </p>
+  <div class="inf-cards reveal">
+    <div class="inf-card">
+      <div class="inf-card-type">패션 유튜버</div>
+      <div class="inf-card-platform">Daily OOTD / 하울 콘텐츠</div>
+      <p class="inf-card-desc">
+        수십만 구독자를 보유한 패션 유튜버의 '오늘의 착장' 영상 하나가 같은 제품의 품절 사태를 만든다. 알고리즘이 선별한 콘텐츠는 동일한 스타일을 반복 노출해 취향의 다양성을 억압한다.
+      </p>
+      <div class="inf-card-tag">OOTD · 하울 · 품절 대란 · 알고리즘 노출</div>
+    </div>
+    <div class="inf-card">
+      <div class="inf-card-type">라이프스타일<br>인플루언서</div>
+      <div class="inf-card-platform">인스타그램 · 틱톡 · 유튜브 쇼츠</div>
+      <p class="inf-card-desc">
+        팔로워 수가 곧 신뢰도로 환산되는 SNS 생태계에서 인플루언서의 착장은 '검증된 취향'처럼 소비된다. '#OOT' '#데일리룩' 해시태그는 유행을 단기간에 동질화시킨다.
+      </p>
+      <div class="inf-card-tag">팔로워 = 권위 · 해시태그 동조 · 취향 동질화</div>
+    </div>
+    <div class="inf-card">
+      <div class="inf-card-type">협찬 &<br>광고 콘텐츠</div>
+      <div class="inf-card-platform">뒷광고 & 스텔스 마케팅</div>
+      <p class="inf-card-desc">
+        인플루언서가 '자발적으로 좋아서' 사용하는 척 포장된 협찬 콘텐츠는 팔로워의 자발적 모방 소비를 유도한다. 자본의 의도가 개인의 '취향'으로 위장된다.
+      </p>
+      <div class="inf-card-tag">스텔스 마케팅 · 취향의 자본화 · 자발성 위장</div>
+    </div>
+  </div>
+  <div class="inf-callout reveal">
+    <div class="inf-callout-icon">▶</div>
+    <div class="inf-callout-text">
+      <strong>플랫폼 알고리즘</strong> + 인플루언서 경제 = 개인 취향의 자본에 의한 설계 · 획일화
+    </div>
+  </div>
+</section>
+
+<!-- CRITIQUE -->
+<section class="critique" id="critique">
+  <div class="section-label reveal">07 & 08 — 비판적 관점</div>
+  <h2 class="section-title reveal reveal-delay-1">패션의 획일화<br>& 기호의 감옥</h2>
+  <div style="margin-top: 2rem;">
+    <div class="critique-block reveal">
+      <div class="critique-block-num">01</div>
+      <div class="critique-block-title">사회적 유니폼화</div>
+      <p class="critique-block-text">
+        아이돌 스타일링이 대중의 절대적 미적 기준으로 군림하면서, <strong>개인의 고유한 취향은 마비</strong>되고 유행의 동질화가 가속화되고 있다. 패션이 자아를 표현하는 주체적 수단에서 타인과 '급'을 나누는 도구로 변질되면서 패션은 <strong>'사회적 유니폼'</strong>으로 전락했다.
+      </p>
+    </div>
+    <div class="critique-block reveal">
+      <div class="critique-block-num">02</div>
+      <div class="critique-block-title">'기호의 감옥' — Jean Baudrillard</div>
+      <p class="critique-block-text">
+        대중은 특정 브랜드의 상징 체계에 갇혀 자본이 설계한 <strong>'기호 가치'를 내면화</strong>한다. 승자독식 구조 속에서 특정 아이돌의 스타일을 추종하지 못하는 개인은 <strong>문화적 낙오자</strong>로 규정된다. 패션은 개성의 표현이 아닌 계급 증명의 수단으로 전락했다.
+      </p>
+    </div>
+    <div class="critique-block reveal">
+      <div class="critique-block-num">03</div>
+      <div class="critique-block-title">자본 중심 미적 기준</div>
+      <p class="critique-block-text">
+        거대 자본이 설계한 시각적 서사가 <strong>'아름다움'의 정의 자체를 장악</strong>한다. 아이돌의 외모와 스타일이 곧 사회적 표준이 되어 다양성을 억압한다. 인플루언서·유튜버 경제가 이 구조를 더욱 강화하며, 알고리즘은 <strong>동질화된 취향</strong>을 더 빠르게 확산시킨다.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- BIG QUOTE -->
+<div class="big-quote reveal">
+  <div class="big-quote-text">
+    스타일링은 개인의 개성을 압살하는 <em>'획일화된 제복'</em>이 아니라,<br>각자의 다양성을 자극하는 <em>'창의적 영감의 원천'</em>으로 기능해야 한다.
+  </div>
+  <div class="big-quote-source">Fashion &amp; Identity Research — Core Proposition</div>
+</div>
+
+<!-- CONCLUSION -->
+<section class="conclusion" id="conclusion">
+  <div class="section-label reveal">09 — 결론 및 제언</div>
+  <h2 class="section-title reveal reveal-delay-1">지속 가능한<br>개성의 미래</h2>
+  <div class="conclusion-grid">
+    <div class="conclusion-card card-1 reveal">
+      <div class="conclusion-card-title">기획사의 윤리적 책임</div>
+      <p class="conclusion-card-text">
+        기획사는 비주얼 전략 수립 시 그 사회적 영향력을 통감해야 한다. 성교육, 독서 교육, 기초 학력(내신 성적) 관리 등의 인성 교육 사례는 비주얼 이면의 내실을 다지는 모범적인 모델이다. 진정한 문화 리더십은 화려한 앰버서더 타이틀이 아닌 '윤리적 내실'에서 온다.
+      </p>
+    </div>
+    <div class="conclusion-card card-2 reveal reveal-delay-1">
+      <div class="conclusion-card-title">대중의 주체적 취향 형성</div>
+      <p class="conclusion-card-text">
+        대중은 아이돌·유튜버·인플루언서의 스타일을 선망하되, 그것이 거대 자본이 설계한 '기호 가치'임을 인지해야 한다. 타인의 취향을 복제하는 방어기제에서 벗어나 자신의 고유한 아비투스(Habitus)를 형성하려는 비판적 태도가 필요하다.
+      </p>
+    </div>
+  </div>
+  <div class="conclusion-final reveal">
+    <p class="conclusion-final-text">자본의 논리를 넘어 인간 본연의 개성을 존중하는 진정한 문화적 진화를 기대한다.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-left">엔터테인먼트 산업의 스타일링 변천과 패션의 획일화 — Culture & Fashion Analysis</div>
+  <div class="footer-right">2024 · Research Report</div>
+</footer>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursor-ring');
+  let mouseX = 0, mouseY = 0;
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX; mouseY = e.clientY;
+    cursor.style.left = mouseX - 4 + 'px';
+    cursor.style.top = mouseY - 4 + 'px';
+    ring.style.left = mouseX - 18 + 'px';
+    ring.style.top = mouseY - 18 + 'px';
+  });
+
+  // Progress bar
+  const pb = document.getElementById('progress-bar');
+  window.addEventListener('scroll', () => {
+    const scrolled = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+    pb.style.width = scrolled + '%';
+  });
+
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Smooth scroll for nav links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>
